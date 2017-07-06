@@ -1,0 +1,33 @@
+{
+  "session": {
+    "sessionId": "***",
+    "application": {
+      "applicationId": "***"
+    },
+    "attributes": {},
+    "user": {
+      "userId": "***"
+    },
+    "new": true
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "***",
+    "locale": "en-US",
+    "timestamp": "2017-07-06T08:25:30Z",
+    "intent": {
+      "name": "calculateExchange",
+      "slots": {
+        "Amount": {
+          "name": "Amount",
+          "value": "2500"
+        },
+        "Currency": {
+          "name": "Currency",
+          "value": "dollars"
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
