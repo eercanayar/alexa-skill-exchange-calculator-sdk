@@ -9,12 +9,19 @@ exports.handler = function(event, context, callback) {
     alexa.execute();
 };
 
+function isInt(value) {
+  return !isNaN(value) && 
+         parseInt(Number(value)) == value && 
+         !isNaN(parseInt(value, 10));
+}
+
 var mainHandlers = {
     'calculateExchange': function() {
         
         var amountVal = parseInt(this.event.request.intent.slots.Amount.value);
         var currencyVal = this.event.request.intent.slots.Currency.value;
-
+        
+        if(isInt(amountVal) && (currencyVal=="dollars" || currencyVal=="euros")) {
         var myCont = this;
         var speechOutput = `You asked ${amountVal} ${currencyVal}. `;
 
@@ -42,16 +49,20 @@ var mainHandlers = {
         	} catch(e) {
                 throw new Error('Parse error:' + e);
             }
-        	//console.log(ratesData);
+        	
         	currencyDict['euros'] = ratesData.rates.EUR;
         	currencyDict['dollars'] = ratesData.rates.USD;
+
         	speechOutput += "It equals to "+Math.round(amountVal/currencyDict[currencyVal])+" Turkish Liras.";
-        	myCont.emit(':ask', speechOutput);  
+            myCont.emit(':tell', speechOutput);  
+        
           });
         };
         
         http.request(options, callbackQ).end();
-
+        } else {
+            this.emit(':ask', "I didn't understand currency and amount, may you ask again?");  
+        }
     },
     "AMAZON.StopIntent": function() {
       this.emit(':tell', "Goodbye!");  
